@@ -2,39 +2,34 @@
     <section :class="CardClasses.container">
     <div class="flipper w-100">
         <article :class="CardClasses.front">
-            <p :class="CardClasses.p">{{pokemon.name.substring(0, 1).toUpperCase()+pokemon.name.substr(1)}}</p>
+            <p :class="CardClasses.p">{{utils.firstNameCaps(pokemon.name)}}</p>
             <object :class="CardClasses.img" :data="pokemon.images.mainLink" type="image/png">
                 <img :class="CardClasses.img" :src="pokemon.images.secondaryLink" :alt="`${pokemon.name} image`" :title="`${pokemon.name} image`">
-            </object>
-            
+            </object>  
             <div :class="CardClasses.btnContainer">
                 <button v-if:="hiddenChooseBtn()" v-on:click="choosePokemon"  :class="CardClasses.btnPrimary">Choose</button>                
                 <button v-on:click="onDetailsClick"  :class="CardClasses.btnSecondary">Details</button>
             </div>
         </article>
-        <article :class="CardClasses.back">
-            
+        <article :class="CardClasses.back"> 
             <button v-on:click="closeDetails" :class="CardClasses.backFlipButton">&#x21b2;</button>
-            
             <div :class="CardClasses.detailContainer">
-                    <dl :class="CardClasses.detailContainerListLeft" style="line-height:0.5rem">
-
-                        <dt class="h6 text-dark">Types</dt>
-                        <dd class=" text-dark m-0 p-1" style="width: auto; height:1rem; font-size:0.7rem" 
+                <dl :class="CardClasses.detailContainerListLeft" style="line-height:0.5rem">
+                    <dt :class="[CardClasses.detailsTitles, 'text-dark']">Types</dt>
+                    <dd :class="[CardClasses.detailsInfos, 'text-dark']" style="width: auto; height:1rem; font-size:0.7rem" 
                         v-for:="types in pokemonDetails.types">{{types.type.name}}</dd>
                         <br>
-                        <dt class="h6 text-dark" >Abilities</dt>
-                        <dd class=" text-dark m-0 p-1" style="width: auto; height:1rem; font-size: 0.7rem" 
-                        v-for:="abilities in pokemonDetails.abilities">{{abilities.ability.name}}</dd>
-                    
-                    </dl>
-                    <dl :class="CardClasses.detailContainerListRight" style="line-height:0.6rem">
-
-                        <dt class="h6 text-light">Stats</dt>
-                        <dd class=" text-light p-1" style="width: auto; height:1rem; font-size: 0.7rem" 
-                        v-for:="stats in pokemonDetails.stats">{{stats.stat.name}}: {{stats.base_stat}}</dd>
-
-                    </dl>
+                        <dt  :class="[CardClasses.detailsTitles, 'text-dark']" >Abilities</dt>
+                        <dd :class="[CardClasses.detailsInfos, 'text-dark']" style="width: auto; height:1rem; font-size: 0.7rem" 
+                        v-for:="abilities in pokemonDetails.abilities">{{abilities.ability.name}}
+                    </dd>      
+                </dl>
+                <dl :class="CardClasses.detailContainerListRight" style="line-height:0.6rem">
+                    <dt  :class="[CardClasses.detailsTitles, 'text-light']">Stats</dt>
+                    <dd :class="[CardClasses.detailsInfos, 'text-light']" style="width: auto; height:1rem; font-size: 0.7rem" 
+                        v-for:="stats in pokemonDetails.stats">{{stats.stat.name}}: {{stats.base_stat}}
+                    </dd>
+                </dl>
             </div>
         </article>
         </div>
@@ -43,24 +38,27 @@
 
 <script lang="ts" setup>
 import { useStore } from 'vuex'
-import { ref, reactive, onMounted, watch, onBeforeMount } from 'vue'
-import { useRoute } from 'vue-router'
+import { ref, reactive } from 'vue'
 import Api from '@/classes/Api.ts'
+import PokemonDetailEntity from '@/entities/PokemonDetail.ts'
+import utils from '@/utils/utils.ts'
 
 const store = useStore()
-const route = useRoute()
 
 const CardClasses = {
-    container: "card-container p-0 mt-0 rounded overflow-hidden d-flex",
+    container: "card-container rounded overflow-hidden d-flex",
     img: "w-100 card-image img-thumbnail rounded-0 mb-3",
     p: "w-100 text-light fs-6 lead d-flex justify-content-center bg-primary rounded-top p-1",
     btnContainer: "card-btn-container w-100",
     btnPrimary: " w-100 btn btn-sm btn-primary p-0 rounded-0",
     btnSecondary: "w-100 btn btn-sm btn-secondary p-0 rounded-0 rounded-bottom",
     front: "card-front border rounded bg-light p-2 d-flex flex-column justify-content-between align-items-center",
-    back: "card-back border rounded bg-light rounded",
+    back: "card-back border rounded bg-light rounded p-0",
     detailContainer: "p-0 d-flex flex-row",
     detailContainerListLeft: "list-unstyled p-1 col-5 mt-4",
+    detailsTitles: "h6",
+    detailsInfos: "p-1",
+    rightDetailsTitles: "",
     detailContainerListRight: "list-unstyled p-1 col-7 bg-primary pb-5",
     statsContainer: "p-0",
     backFlipButton: "btn btn-sm rounded-0 position-absolute top-0 start-0 mx-0 my-0 bg-light px-2 text-primary"
@@ -79,49 +77,37 @@ const TeamBoard = {
 
 const onDetailsClick = (e) => {
     const cardContainer = e.target.parentElement.parentElement.parentElement 
-    cardContainer.classList.add("flip-in")
-        
+    cardContainer.classList.add("flip-in")    
     getPokemonDetail(cardContainer)
 }
 
 const closeDetails = (e) => {
-    
     const cardContainer = e.target.parentElement.parentElement
-    console.log(cardContainer)
     cardContainer.classList.remove('flip-in')
 }
 
 const pokemonDetails = reactive({})
 
 const getPokemonDetail = (card: object) => {
-    Api.get(`/pokemon/${props.pokemon.id}`).then((res:object) => Object.assign(pokemonDetails, res.data))
+    Api.get(`/pokemon/${props.pokemon.id}`).then((res:object) => Object.assign(pokemonDetails, new PokemonDetailEntity(res.data.abilities, res.data.types, res.data.stats)))
 }
-
 
 const choosePokemon = (e) => {
     const selectedPokemon = store.state.createTeam.pokemonList.results.find((pokemon: object) => pokemon.url.includes(`/${props.pokemon.id}`))
-    
-    if(store.state.createTeam.currentTeamObject.team.length < store.state.createTeam.maxSlotNumber){
+    if(store.state.createTeam.currentTeam.length < store.state.createTeam.maxSlotNumber){
         hiddenChooseBtn(e)
-        store.commit('setCurrentTeam', selectedPokemon)
+        store.commit('pushToCurrentTeam', {...selectedPokemon})
     }
-    
 }
 
-const hiddenChooseBtn = (e) => {
-    console.log()
-    return (store.state.createTeam.currentTeamObject.team.length === store.state.createTeam.maxSlotNumber
-    || store.state.createTeam.currentTeamObject.team.find((pokemon:object) => props.pokemon.name === pokemon.name))
+const hiddenChooseBtn = () => {
+    return (store.state.createTeam.currentTeam.length === store.state.createTeam.maxSlotNumber
+    || store.state.createTeam.currentTeam.find((pokemon:object) => props.pokemon.name === pokemon.name))
     ? 
     false 
     : 
     true
 }
-
-onMounted(()=>{
-   
-    
-})
 </script>
 
 <style scoped>
@@ -160,6 +146,6 @@ onMounted(()=>{
 }
 
 .flip-in{
-transform:rotateY(calc(180deg * 1));
+    transform:rotateY(calc(180deg * 1));
 }
 </style>

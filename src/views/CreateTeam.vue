@@ -1,18 +1,16 @@
 <template>
     <div class="createTeam">
-        <RegisterTeamForm v-if:="!store.state.createTeam.currentTeamObject.name" />
+        <RegisterTeamForm class="container" v-if:="!store.state.createTeam.currentTeamObject.name" />
         
-        <TeamBoard v-if:="store.state.createTeam.currentTeamObject.name" />
-
-        <Pagination v-if:="store.state.createTeam.currentTeamObject.name" 
-                    v-on:emitqueryrange="requestPokemons"/>
+        <TeamBoard class="container" v-if:="store.state.createTeam.currentTeamObject.name" />
 
         <router-view v-slot="{Component}">
             <transition name="transition" mode="out-in">
-                <component :is="Component" v-if:="store.state.createTeam.currentTeamObject.name" :key="route.path"></component>
+                <component class="container" :is="Component" v-if:="store.state.createTeam.currentTeamObject.name" :key="route.path"></component>
             </transition>
         </router-view>
-
+        <Pagination class="container" v-if:="store.state.createTeam.currentTeamObject.name" 
+                    v-on:emitqueryrange="requestPokemons"/>
     </div>
 </template>
 
@@ -20,10 +18,8 @@
 import RegisterTeamForm from '@/components/RegisterTeamForm.vue'
 import Pagination from '@/components/Pagination.vue'
 import { useStore } from 'vuex'
-import { onMounted, onBeforeMount } from 'vue'
+import { onBeforeMount } from 'vue'
 import { useRoute } from 'vue-router'
-
-import Card from '../components/Card.vue'
 import TeamBoard from '@/components/TeamBoard.vue'
 
 const store = useStore()
@@ -43,13 +39,13 @@ onBeforeMount(()=>{
 <style scoped>
     .transition-enter-active,
     .transition-leave-active{
-        transition: opacity 1s, transform 1s
+        transition: opacity 1s, transform 0.5s
     }
 
     .transition-enter-from,
     .transition-leave-to{
         opacity:0;
-        transform: translateY(100%)
+        transform: translateY(200%)
     }
   
   .createTeam{

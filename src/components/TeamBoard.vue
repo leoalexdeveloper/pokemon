@@ -11,14 +11,13 @@
                 </div>
             </div>
         </div>
-        <div v-if="!Pokemon.editName.value" :class="TeamBoardClasses.teamName">
-            <div class="border p-2 rounded">
-                Team: {{store.state.createTeam.currentTeamObject.name}}
-                <button v-on:click="changeName" class="btn btn-sm btn-primary border">Edit team name</button>
+        <div v-if="!Pokemon.editName.value" :class="TeamBoardClasses.panel">
+            <div class="w-auto border rounded p-2 d-flex align-items-center justify-content-between">
+                Team: {{utils.firstNameCaps(store.state.createTeam.currentTeamObject.name)}}
+                <button v-on:click="changeNameBox" class="btn btn-sm btn-secondary border mx-2">Edit</button>
             </div>
-            <div class="col-7 d-flex justify-content-around align-items-center p-0">
-                <div :class="{'bg-success':validate(), 'text-light':validate(), 'bg-warning':!validate(), 'text-dark':!validate()}" 
-                class="border rounded p-1 col-9 text-center d-flex justify-content-evenly" role="alert">
+            <div class="col-8 d-flex justify-content-around align-items-center p-0">
+                <div :class="[TeamBoardClasses.alertBox, {'bg-success':validate(), 'text-light':validate(), 'bg-warning':!validate(), 'text-dark':!validate()}]" role="alert">
                     {{countTeamPokemons()}}
                     <div v-if:="disableSaveButton()">
                         <router-link :to="{name:'ViewTeam'}">
@@ -27,7 +26,6 @@
                         </router-link>
                     </div>
                 </div>
-                
                 <div>
                     <router-link v-on:click="resetCurrentTeamObject" to="/">
                         <button class="btn btn-danger text-light px-2 btn-sm rounded border">Cancel</button>
@@ -35,35 +33,38 @@
                 </div>
             </div>
         </div>
-        <EditPokemonName v-if="Pokemon.editName.value" v-on:changeTeamName="changeName" class=""/>
+        <EditPokemonName v-if="Pokemon.editName.value" v-on:changeTeamName="changeNameBox" v-on:closeChangeTeamNameBox="changeNameBox"/>
     </div>
 </template>
 
 <script lang="ts" setup>
-import { computed, onMounted, reactive, onUpdated, watch, onBeforeMount, ref } from 'vue'
+import { computed, reactive, onUpdated, watch, onBeforeMount, ref } from 'vue'
 import { useStore } from 'vuex'
 import { useRoute } from 'vue-router'
 import TeamEntity from  '@/entities/Team.ts'
 import EmptySlot from '@/components/EmptySlot.vue'
 import PokemonSlot from '@/components/PokemonSlot.vue'
 import EditPokemonName from '@/components/EditPokemonName.vue'
+import utils from '@/utils/utils.ts'
 
 const store = useStore()
 const route = useRoute()
 
 const Pokemon = {
-    team: reactive(store.state.createTeam.currentTeamObject.team),
+    team: reactive(store.state.createTeam.currentTeam),
+    teamTemp: {...store.state.createTeam.currentTeam},
     validTeam: ref<boolean>(false),
     disableEditTeamName: ref<boolean>(false),
     teamName: ref<string>(store.state.createTeam.currentTeamObject.name),
-    editName: ref<boolean>(false)
+    editName: ref<boolean>(false),
 }
 
 const TeamBoardClasses = {
-    container: "team-container container bg-light border position-sticky top-0 start-0 d-flex flex-column justify-content-between",
-    teamName: "w-100 border bg-primary text-light fs-6 p-2 rounded lead d-flex justify-content-between align-items-center",
-    cardContainer: "d-flex justify-content-between",
-    card: "card m-2 mt-2 d-flex flex-row border",
+    container: "team-container container position-sticky top-0 start-0 my-2",
+    panel: "w-100 bg-primary text-light fs-6 p-2 rounded-bottom lead d-flex justify-content-between align-items-center",
+    cardContainer: "card-container d-flex justify-content-evenly mb-2 rounded-top",
+    card: "card m-2 mt-2 d-flex flex-row",
+    alertBox:"border rounded p-1 col-9 text-center d-flex justify-content-evenly"
 }
 
 const removeFromSlot = (index: number) => {
@@ -72,16 +73,17 @@ const removeFromSlot = (index: number) => {
 
 const saveTeam = () => {
     if(validate()){
-        const savedTeams = store.state.createTeam.savedTeams
+        const savedTeams = {...store.state.createTeam.savedTeams}
+        store.state.createTeam.currentTeamObject.team = [...store.state.createTeam.currentTeam]
         savedTeams[store.state.createTeam.currentTeamObject.uuid] = {...store.state.createTeam.currentTeamObject}
-        store.commit('saveTeams', savedTeams)
-         console.log(savedTeams[store.state.createTeam.currentTeamObject.uuid])
+        store.commit('saveTeams', {...savedTeams})
         resetCurrentTeamObject()
     }
 }
 
 const resetCurrentTeamObject = () => {
-    store.commit('setCurrentTeamObject', new TeamEntity())
+    store.commit('clearCurrentTeam')
+    store.commit('setCurrentTeamObject', {...new TeamEntity()})
 }
 
 const disableSaveButton = () => {
@@ -101,12 +103,8 @@ const countTeamPokemons = () => {
     if(count < 1){
         return 'Great job! Click on save to store this team.'
     }else{
-        return `You should choose ${count} pokemons yet!`
+        return `You could pick ${count} pokemons!`
     }
-}
-
-const changeName = () => {
-    Pokemon.editName.value = !Pokemon.editName.value
 }
 </script>
 
@@ -114,5 +112,8 @@ const changeName = () => {
 
 .team-container{
     z-index: 2;
+}
+.card-container{
+    background-color: rgba(255,255,255,0.2);
 }
 </style>

@@ -30,7 +30,7 @@
                     <button :class="PaginationClasses.btn" disabled><ins>Previous</ins></button>    
                 </div>
 
-                <li class="page-item col-1 text-center"><a :class="PaginationClasses.a" href="#"><ins>{{route.params.page}}</ins></a></li>
+                <li :class="PaginationClasses.li"><a :class="PaginationClasses.a" href="#"><ins>{{route.params.page}}</ins></a></li>
 
                 <div v-if:="Number(route.params.page) < returnPageNumber()">
                     <router-link v-on:click="next" :to="{name:'CreatePickBoard', params:{team:currentTeam.name, page:Number(route.params.page) + 1}}">
@@ -64,9 +64,8 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, reactive, onMounted, onBeforeMount, onUpdated, watch, defineEmits } from 'vue'
+import { ref, reactive, onMounted, watch, defineEmits } from 'vue'
 import { useStore } from 'vuex'
-import LocalStorage from '@/classes/LocalStorage.ts'
 import { useRoute } from 'vue-router'
 
 const store = useStore()
@@ -75,7 +74,7 @@ const route = useRoute()
 const currentTeam = reactive(store.state.createTeam.currentTeamObject)
 
 const PaginationClasses = {
-    container: "pagination-container w-100 position-fixed bottom-0 bg-light  d-flex justify-content-center align-items-center",
+    container: "pagination-container position-sticky bottom-0 w-25 rounded-top d-flex justify-content-center",
     btn: "btn btn-light text-primary rounded-0 border",
     li: "page-item rounded-0",
     a: "page-link rounded-0"
@@ -114,7 +113,6 @@ onMounted(()=>{
 
 <style>
 .pagination-container{
-    height: 1rem;
     z-index:2;
 }
 </style>

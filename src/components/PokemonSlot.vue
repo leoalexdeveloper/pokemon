@@ -1,7 +1,7 @@
 <template>
     <div :class="TeamBoardClasses.pickedPokemon">
         <h6 :class="TeamBoardClasses.title">
-            {{pokemonTeam.name.substring(0, 1).toUpperCase()+pokemonTeam.name.substr(1)}}
+            {{utils.firstNameCaps(pokemonTeam.name)}}
         </h6>
         <object :class="TeamBoardClasses.img" :data="pokemonTeam.images.mainLink" type="image/png">
             <img :class="TeamBoardClasses.img" :src="pokemonTeam.images.secondaryLink" :alt="pokemonTeam.name">
@@ -12,6 +12,7 @@
 
 <script lang="ts" setup>
 import { useStore } from 'vuex'
+import utils from '@/utils/utils.ts'
 
 const store = useStore()
 

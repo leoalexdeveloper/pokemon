@@ -1,6 +1,6 @@
 <template>
     <div>
-        <ShowTeamBoard />
+        <ShowTeamBoard class="container"/>
   </div>
 </template>
 

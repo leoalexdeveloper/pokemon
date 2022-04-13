@@ -1,6 +1,6 @@
 <template>
     <div :class="TeamBoardClasses.emptySlot">
-        Slot{{index}}
+        <p>Slot{{index}}</p> 
     </div>
 </template>
 

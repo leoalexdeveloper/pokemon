@@ -1,6 +1,5 @@
 <template>
     <div :class="FormClass.container">
-
         <div v-if:="FormData.hasError.value" 
             :class="[FormClass.alert,{'bg-danger':FormData.hasError.value, 'bg-success':FormData.hasError.value}]" role="alert">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-exclamation-triangle-fill flex-shrink-0 me-2" viewBox="0 0 16 16" role="img" aria-label="Warning:">
@@ -10,18 +9,13 @@
                 {{FormData.errorMsg.value}}
             </div>
         </div>
-
         <form :class="FormClass.form" action="">
-        
             <label :class="FormClass.label" for="">Create Team</label>
-            <input v-model="FormData.teamName.value" :class="FormClass.inputText" type="text" placeholder="Insert a team name">
-            
+            <input v-model="FormData.teamName.value" :class="FormClass.inputText" type="text" placeholder="Insert a team name">   
             <router-link v-on:click.prevent.stop="storeCurrentTeamObject" :to="{name:'CreatePickBoard', params:{team:FormData.teamName.value, page:1}}">
                 <input :class="FormClass.inputSubmit" type="submit" value="Register">
-            </router-link>
-            
+            </router-link>   
         </form>
-
     </div>
 </template>
 
@@ -35,7 +29,7 @@ const route  = useRoute()
 const store = useStore()
 
 const FormClass = {
-    container:"container w-100 mt-5",
+    container:"container mt-5",
     form:"form col-6 m-auto border p-4 d-flex flex-column rounded",
     label:"form-label",
     inputText:"form-control",
@@ -71,7 +65,7 @@ onMounted(()=>{
 </script>
 
 <style scoped>
-.container{
-min-width: 600px;
+.form{
+    background-color: rgba(255,255,255,0.8) !important;
 }
 </style>

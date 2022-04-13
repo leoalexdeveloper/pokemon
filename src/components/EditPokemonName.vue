@@ -1,6 +1,5 @@
 <template>
     <div :class="FormClass.container">
-    
         <div v-if:="FormData.hasError.value" 
             :class="[FormClass.alert,{'bg-danger':FormData.hasError.value, 'bg-success':FormData.hasError.value}]" role="alert">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-exclamation-triangle-fill flex-shrink-0 me-2" viewBox="0 0 16 16" role="img" aria-label="Warning:">
@@ -10,35 +9,39 @@
                 {{FormData.errorMsg.value}}
             </div>
         </div>
-
-        <form :class="FormClass.form" action="">
+        <form :class="FormClass.form" v-on:keypress.enter.prevent.stop="">
         <div class="w-100">
-            <div class="col-1 float-end btn border-2 border-dark px-0 py-0">&#x2716;</div>
+            <button v-on:click.prevent.stop="closeChangeTeamNameBox" :class="[FormClass.closeBtn]">&#x2716;</button>
         </div>
             <label :class="FormClass.label" for="">Change name</label>
-            <input v-model="FormData.teamName.value" :class="FormClass.inputText" type="text" placeholder="Insert a team name">
+            <input v-model="FormData.teamName.value" 
+                   :placeholder="store.state.createTeam.currentTeamObject.name" 
+                   :class="FormClass.inputText" 
+                   type="text" 
+                   placeholder="Insert a team name">
             
-            <router-link v-on:click.prevent.stop="changeTeamName" :to="{name:'CreatePickBoard', params:{team:FormData.teamName.value, page:1}}">
-                <input :class="FormClass.inputSubmit" type="submit" value="Register">
-            </router-link>
-            
+            <router-link v-on:click.prevent.stop="changeTeamName"      
+                        :to="{name:'EditPickBoard', params:{team:FormData.teamName.value, page:1}}">
+                <input :class="FormClass.inputSubmit" type="submit" value="Change name">
+            </router-link>    
         </form>
-
     </div>
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, defineEmits } from 'vue'
 import { useRoute } from 'vue-router'
 import { useStore } from 'vuex'
-import TeamEntity from '@/entities/Team.ts'
 
 const route  = useRoute()
 const store = useStore()
 
+const emit = defineEmits(['changeTeamName', 'closeChangeTeamNameBox'])
+
 const FormClass = {
-    container:"container w-100 mt-5",
+    container:"container w-100 mt-3",
     form:"form col-6 m-auto border p-4 d-flex flex-column rounded",
+    closeBtn: "close-btn col-1 float-end btn border-2 border-dark px-0 py-0",
     label:"form-label",
     inputText:"form-control",
     inputSubmit:"form-submit col-12 btn btn-primary mt-3",
@@ -59,19 +62,23 @@ const throwError = () => {
     return FormData.hasError.value = true
 }
 
-const emitTeamName = defineEmits(['changeTeamName'])
-const changeTeamName = () => {
+const changeTeamName = (e) => {
     if(validate()){
         const currentTeamObject = store.state.createTeam.currentTeamObject
         currentTeamObject['name'] = FormData.teamName.value
         store.commit('setCurrentTeamObject', currentTeamObject)
-        emitTeamName('changeTeamName', true)
+        emit('changeTeamName', true)
         return 
     }
     throwError()
 }
 
+const closeChangeTeamNameBox = () => {
+    emit('closeChangeTeamNameBox', true)
+}
+
 onMounted(()=>{
+    console.log(document.querySelector('[type="text"]').focus())
     store.commit('setCurrentPage', 1)
 })
 </script>
@@ -80,6 +87,11 @@ onMounted(()=>{
 .container{
 width: 600px;
 height: 30%;
+}
+.form{
 background-color: rgba(255,255,255,0.95);
+}
+.close-btn{
+    filter: invert(.7)
 }
 </style>

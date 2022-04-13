@@ -1,38 +1,40 @@
 <template>
     <div :class="NavBarClass.container">
         <div>
-        <nav :class="NavBarClass.nav">
-            <ul :class="NavBarClass.ul">
-            
-                <router-link to="/">
-                    <li :class="NavBarClass.li">Teams</li>
-                </router-link>
-
-                <router-link :to="{name:'CreatePickBoard', params:{team:store.state.createTeam.currentTeamObject.name, page:store.state.createTeam.currentPage}}">
-                    <li :class="NavBarClass.li">Create Team</li>
-                </router-link>
+            <nav :class="NavBarClass.nav">
+                <ul :class="NavBarClass.ul">
                 
-            </ul>
-        </nav>
-    </div>
+                    <router-link to="/">
+                        <li :class="[NavBarClass.li, 'btn-secondary text-light']">Teams</li>
+                    </router-link>
+
+                    <router-link v-if:="!checkSavedTeams()" :to="{name:'CreatePickBoard', params:{team:store.state.createTeam.currentTeamObject.name, page:store.state.createTeam.currentPage}}">
+                        <li :class="[NavBarClass.li, 'bg-primary text-light']">Create Team</li>
+                    </router-link>
+                    
+                    <router-link v-if:="checkSavedTeams()" :to="{name:'EditPickBoard', params:{team:store.state.createTeam.currentTeamObject.name, page:store.state.createTeam.currentPage}}">
+                        <li :class="[NavBarClass.li, 'bg-primary text-light']">Edit Team</li>
+                    </router-link>
+                </ul>
+            </nav>
+        </div>
     </div>
 </template>
 
 <script lang="ts" setup>
-import LocalStorage from '@/classes/LocalStorage.ts'
 import { useStore } from 'vuex'
 import { useRoute } from 'vue-router'
 
-import { ref, onMounted, onUpdated, watch } from 'vue'
+import { ref, onMounted, onUpdated } from 'vue'
 
 const store = useStore()
 const route = useRoute()
 
 const NavBarClass = {
-    container:"navbar-container w-100 position-sticky top-0 start-0",
+    container:"navbar-container container w-100 rounded-bottom position-sticky top-0 start-0 d-flex justify-content-end",
     nav:"nav-bar w-100",
     ul: "list-unstyled d-flex justify-content-center",
-    li:"m-2"
+    li:"btn m-2"
 }
 
 const CreateTeam = {
@@ -55,21 +57,35 @@ const scrollHide = () => {
     }
 }
 
+const checkSavedTeams = () => {
+    return Object.keys(store.state.createTeam.savedTeams).find((key: object) => store.state.createTeam.savedTeams[key].uuid === store.state.createTeam.currentTeamObject.uuid) ? true : false
+}
+
 onMounted(()=>{
     //scrollHide()
+})
+
+onUpdated(()=>{
+    console.log(route.params)
 })
 </script>
 
 <style>
 .navbar-container{
+    max-width:1120px;
     z-index:10;
-    height: 2.5rem;
-    background-color: rgba(255,255,255,0.9);
+    height: 3.5rem;
+    background-color: rgba(255,255,255,0.2);
     transition: transform 0.2s cubic-bezier(.18,.81,.77,.94);
     transform-origin: top;
     transform: translateY(0%);
 }
 .navBarHidden{
     transform:translateY(-100%);
+}
+</style>
+
+<style scoped>
+.conrtainer{
 }
 </style>
