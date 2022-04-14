@@ -9,8 +9,8 @@
                     <p :class="ShowViewBoard.teamNameP" class="col-4 rounded-end">Updated at: {{String(new Date(team.updatedAt)).substring(4,24)}}</p>
                 </div>
                 <div :class="ShowViewBoard.pokeContainer">
-                    <div :class="ShowViewBoard.pokeCard" v-for:="(element, index) in team.team">
-                        <p :class="ShowViewBoard.name">{{element.name.substr(0, 1).toUpperCase() + element.name.substring(1)}}</p>
+                    <div :class="ShowViewBoard.pokeCard" v-for:="(element, index) in (team.team as Array<PokemonEntity>)">
+                        <p :class="ShowViewBoard.name">{{utils.firstNameCaps(element.name)}}</p>
                         <div :class="ShowViewBoard.imgContainer">
                             <object :class="ShowViewBoard.image" :data="element.images.mainLink" type="image/png">
                                 <img :class="ShowViewBoard.image" :src="element.images.secondaryLink" :alt="`${element.name} image`" :title="`${element.name} image`">
@@ -22,7 +22,7 @@
                     <router-link  class="w-100 mx-0 d-flex justify-content-center" v-on:click="storeEditableTeam(index)" :to="{name:'EditPickBoard', params:{team:team.name, page:1}}">
                         <button :class="[ShowViewBoard.btn, 'btn-primary']">Edit</button>
                     </router-link>
-                    <button v-on:click="deleteSavedTeamsItem(team, index)" :class="[ShowViewBoard.btn, 'btn-danger', 'mt-2']">Delete</button>
+                    <button v-on:click="deleteSavedTeamsItem(index)" :class="[ShowViewBoard.btn, 'btn-danger', 'mt-2']">Delete</button>
                 </div>
             </div>
         </div>
@@ -35,8 +35,9 @@
 <script lang="ts" setup>
 import { reactive } from 'vue'
 import { useStore } from 'vuex'
-import TeamEntity from  '@/entities/Team.ts'
-import utils from '@/utils/utils.ts'
+import TeamEntity from  '../entities/Team'
+import utils from '../utils/utils'
+import PokemonEntity from '../entities/Pokemon'
 
 const store = useStore()
 
@@ -55,19 +56,21 @@ const ShowViewBoard = {
     teamEmptyMsg: "background-color: rgba(255,255,255,0.2);"
 }
 
-const teams = reactive<object[]>(store.state.createTeam.savedTeams)
-
-const deleteSavedTeamsItem = (team:object, index: string) => {
+const teams = reactive<TeamEntity[]>(store.state.createTeam.savedTeams)
+console.log(teams)
+const deleteSavedTeamsItem = (index: number) => {
+    const team = store.state.createTeam.savedTeams[String(index)]
     if(window.confirm(`Confirm delete Team ${team.name}?`)){
         store.commit('deleteSavedTeamsItem', index)
+        store.commit('clearCurrentTeam')
         if(store.state.createTeam.currentTeamObject.uuid === team.uuid){
             store.commit('setCurrentTeamObject', new TeamEntity())
         }
     }
 }
 
-const storeEditableTeam = (uuid: object) => {
-    const editableTeamUuid = Object.keys(store.state.createTeam.savedTeams).find((key:object) => key === uuid)
+const storeEditableTeam = (uuid: number) => {
+    const editableTeamUuid: string | any = Object.keys(store.state.createTeam.savedTeams).find((key:string) => key === String(uuid))
     store.commit('setCurrentTeamObject', {...store.state.createTeam.savedTeams[editableTeamUuid]})
     store.commit('setCurrentTeam', [...store.state.createTeam.savedTeams[editableTeamUuid].team])
 }

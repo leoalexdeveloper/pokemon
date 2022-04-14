@@ -1,7 +1,7 @@
 import { createStore } from 'vuex'
-import Api from '@/classes/Api.ts'
-import PokemonListEntity from '@/entities/PokemonList.ts'
-
+import Api from '../classes/Api'
+import PokemonListEntity from '../entities/PokemonList'
+import PokemonDetailEntity from '../entities/PokemonDetail'
 import VuexPersistence from 'vuex-persist'
 
 const vuexLocal = new VuexPersistence({
@@ -10,7 +10,7 @@ const vuexLocal = new VuexPersistence({
 
 export default createStore({
     state:{
-        baseURL: "https://pokeapi.co/api/v2/"
+        
     },
     mutations:{
 
@@ -22,10 +22,12 @@ export default createStore({
         createTeam:{
             state:()=>{
                 return {
+                    baseURL: "https://pokeapi.co/api/v2/" as string,
                     currentTeamObject: {} as object,
                     currentTeam: [] as object[],
                     savedTeams: {} as object,
                     pokemonList: {} as object,
+                    pokemonDetail: {} as object,
                     maxElementsToShow: 14 as number,
                     currentPage: 1 as number,
                     selectedRange: [] as number[],
@@ -36,8 +38,8 @@ export default createStore({
                 setCurrentTeamObject(state, payload: object){
                     Object.assign(state.currentTeamObject, {...payload})
                 },
-                setPokemonList(state, payload){             
-                    payload.then((res: object) => Object.assign(state.pokemonList, (new PokemonListEntity(res.data.count, res.data.next, res.data.previous, res.data.results, this.state.baseURL))))
+                setPokemonList(state, payload){           
+                    payload.then((res: PokemonListEntity) => Object.assign(state.pokemonList, (new PokemonListEntity(res.count, res.next, res.previous, res.results, state.baseURL))))
                 },
                 setCurrentPage(state, payload){
                     state.currentPage = payload
@@ -49,7 +51,7 @@ export default createStore({
                    state.currentTeam.push({...payload})
                 },
                 clearCurrentTeam(state, payload){
-                    state.currentTeam.length = 0
+                    state.currentTeam = []
                 },
                 deleteCurrentTeamItem(state, index){
                     state.currentTeam.splice(index, 1)
@@ -59,12 +61,20 @@ export default createStore({
                 },
                 deleteSavedTeamsItem(state, index: string){ 
                     delete state.savedTeams[index]
+                },
+                setPokemonDetail(state, [pokemonId, pokemon]){
+                    const pokemonDetail = state.pokemonDetail
+                    pokemon.then((res:PokemonDetailEntity) => pokemonDetail[String(pokemonId)] = new PokemonDetailEntity(res.abilities, res.types, res.stats))
+                    Object.assign(state.pokemonDetail, pokemonDetail)
                 }
             },
             actions:{ 
                 getPokemonList({commit}, [limit, offset]:string[]){
                     commit('setPokemonList', Api.get(`pokemon?limit=${limit}&offset=${offset}`))
                 },
+                getPokemonDetail({commit}, pokemonId){
+                    commit('setPokemonDetail', [pokemonId, Api.get(`/pokemon/${pokemonId}`)])
+                }
             },
             getters:{
              

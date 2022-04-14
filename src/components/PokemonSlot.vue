@@ -12,7 +12,7 @@
 
 <script lang="ts" setup>
 import { useStore } from 'vuex'
-import utils from '@/utils/utils.ts'
+import utils from '../utils/utils'
 
 const store = useStore()
 

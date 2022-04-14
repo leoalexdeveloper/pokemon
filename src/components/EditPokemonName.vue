@@ -62,7 +62,7 @@ const throwError = () => {
     return FormData.hasError.value = true
 }
 
-const changeTeamName = (e) => {
+const changeTeamName = () => {
     if(validate()){
         const currentTeamObject = store.state.createTeam.currentTeamObject
         currentTeamObject['name'] = FormData.teamName.value
@@ -78,7 +78,7 @@ const closeChangeTeamNameBox = () => {
 }
 
 onMounted(()=>{
-    console.log(document.querySelector('[type="text"]').focus())
+    document.querySelector('[type="text"]').focus()
     store.commit('setCurrentPage', 1)
 })
 </script>

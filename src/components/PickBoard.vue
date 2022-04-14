@@ -7,8 +7,8 @@
 </template>
 
 <script lang="ts" setup>
-import { defineProps, watch, onBeforeMount } from 'vue'
-import Card from '@/components/Card.vue'
+import { onBeforeMount } from 'vue'
+import Card from '../components/Card.vue'
 import { useStore } from 'vuex'
 import { useRoute } from 'vue-router'
 

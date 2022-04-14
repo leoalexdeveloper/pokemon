@@ -38,14 +38,14 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, reactive, onUpdated, watch, onBeforeMount, ref } from 'vue'
+import { reactive, ref } from 'vue'
 import { useStore } from 'vuex'
 import { useRoute } from 'vue-router'
-import TeamEntity from  '@/entities/Team.ts'
-import EmptySlot from '@/components/EmptySlot.vue'
-import PokemonSlot from '@/components/PokemonSlot.vue'
-import EditPokemonName from '@/components/EditPokemonName.vue'
-import utils from '@/utils/utils.ts'
+import TeamEntity from  '../entities/Team'
+import EmptySlot from '../components/EmptySlot.vue'
+import PokemonSlot from '../components/PokemonSlot.vue'
+import EditPokemonName from '../components/EditPokemonName.vue'
+import utils from '../utils/utils'
 
 const store = useStore()
 const route = useRoute()
@@ -105,6 +105,10 @@ const countTeamPokemons = () => {
     }else{
         return `You could pick ${count} pokemons!`
     }
+}
+
+const changeNameBox = () => {
+    Pokemon.editName.value = !Pokemon.editName.value
 }
 </script>
 

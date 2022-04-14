@@ -7,27 +7,33 @@
                 <img :class="CardClasses.img" :src="pokemon.images.secondaryLink" :alt="`${pokemon.name} image`" :title="`${pokemon.name} image`">
             </object>  
             <div :class="CardClasses.btnContainer">
-                <button v-if:="hiddenChooseBtn()" v-on:click="choosePokemon"  :class="CardClasses.btnPrimary">Choose</button>                
-                <button v-on:click="onDetailsClick"  :class="CardClasses.btnSecondary">Details</button>
+                <button v-if:="hiddenChooseBtn()" 
+                        v-on:click="choosePokemon"  
+                        :class="CardClasses.btnPrimary">Choose</button>                
+                <button v-on:click="onDetailsClick"  
+                        :class="CardClasses.btnSecondary">Details</button>
             </div>
         </article>
         <article :class="CardClasses.back"> 
-            <button v-on:click="closeDetails" :class="CardClasses.backFlipButton">&#x21b2;</button>
+            <button v-on:click="closeDetails" 
+                    :class="CardClasses.backFlipButton">&#x21b2;</button>
             <div :class="CardClasses.detailContainer">
                 <dl :class="CardClasses.detailContainerListLeft" style="line-height:0.5rem">
                     <dt :class="[CardClasses.detailsTitles, 'text-dark']">Types</dt>
                     <dd :class="[CardClasses.detailsInfos, 'text-dark']" style="width: auto; height:1rem; font-size:0.7rem" 
-                        v-for:="types in pokemonDetails.types">{{types.type.name}}</dd>
+                        v-for:="types in (pokemonDetails[String(pokemon.id)]?.types as Array<PokemonDetailEntity['types']>)">{{(types.type.name)}}</dd>
                         <br>
-                        <dt  :class="[CardClasses.detailsTitles, 'text-dark']" >Abilities</dt>
-                        <dd :class="[CardClasses.detailsInfos, 'text-dark']" style="width: auto; height:1rem; font-size: 0.7rem" 
-                        v-for:="abilities in pokemonDetails.abilities">{{abilities.ability.name}}
+                    <dt  :class="[CardClasses.detailsTitles, 'text-dark']" >Abilities</dt>
+                    <dd :class="[CardClasses.detailsInfos, 'text-dark']" style="width: auto; height:1rem; font-size: 0.7rem" 
+                        v-for:="abilities in (pokemonDetails[String(pokemon.id)]?.abilities as Array<PokemonDetailEntity['abilities']>)">
+                        {{abilities.ability.name}}
+                        
                     </dd>      
                 </dl>
                 <dl :class="CardClasses.detailContainerListRight" style="line-height:0.6rem">
                     <dt  :class="[CardClasses.detailsTitles, 'text-light']">Stats</dt>
-                    <dd :class="[CardClasses.detailsInfos, 'text-light']" style="width: auto; height:1rem; font-size: 0.7rem" 
-                        v-for:="stats in pokemonDetails.stats">{{stats.stat.name}}: {{stats.base_stat}}
+                     <dd :class="[CardClasses.detailsInfos, 'text-light']" style="width: auto; height:1rem; font-size: 0.7rem" 
+                       v-for:="stats in (pokemonDetails[String(pokemon.id)]?.stats as Array<PokemonDetailEntity['stats']>)">{{stats.stat.name}}: {{stats.base_stat}}
                     </dd>
                 </dl>
             </div>
@@ -39,9 +45,11 @@
 <script lang="ts" setup>
 import { useStore } from 'vuex'
 import { ref, reactive } from 'vue'
-import Api from '@/classes/Api.ts'
-import PokemonDetailEntity from '@/entities/PokemonDetail.ts'
-import utils from '@/utils/utils.ts'
+import Api from '../classes/Api'
+import PokemonDetailEntity from '../entities/PokemonDetail'
+import PokemonEntity from '../entities/Pokemon'
+
+import utils from '../utils/utils'
 
 const store = useStore()
 
@@ -75,34 +83,34 @@ const TeamBoard = {
     hasPokemon: ref<boolean>(false)
 }
 
-const onDetailsClick = (e) => {
+const onDetailsClick = (e:any) => {
     const cardContainer = e.target.parentElement.parentElement.parentElement 
     cardContainer.classList.add("flip-in")    
     getPokemonDetail(cardContainer)
 }
 
-const closeDetails = (e) => {
+const closeDetails = (e:any) => {
     const cardContainer = e.target.parentElement.parentElement
     cardContainer.classList.remove('flip-in')
 }
 
-const pokemonDetails = reactive({})
+const pokemonDetails = reactive<PokemonDetailEntity>(store.state.createTeam.pokemonDetail)
 
 const getPokemonDetail = (card: object) => {
-    Api.get(`/pokemon/${props.pokemon.id}`).then((res:object) => Object.assign(pokemonDetails, new PokemonDetailEntity(res.data.abilities, res.data.types, res.data.stats)))
+    store.dispatch('getPokemonDetail', props.pokemon.id)
 }
 
-const choosePokemon = (e) => {
-    const selectedPokemon = store.state.createTeam.pokemonList.results.find((pokemon: object) => pokemon.url.includes(`/${props.pokemon.id}`))
+const choosePokemon = (e:any) => {
+    const selectedPokemon = store.state.createTeam.pokemonList.results.find((pokemon: PokemonEntity) => pokemon.url.includes(`/${props.pokemon.id}`))
     if(store.state.createTeam.currentTeam.length < store.state.createTeam.maxSlotNumber){
-        hiddenChooseBtn(e)
+        hiddenChooseBtn()
         store.commit('pushToCurrentTeam', {...selectedPokemon})
     }
 }
 
 const hiddenChooseBtn = () => {
     return (store.state.createTeam.currentTeam.length === store.state.createTeam.maxSlotNumber
-    || store.state.createTeam.currentTeam.find((pokemon:object) => props.pokemon.name === pokemon.name))
+    || store.state.createTeam.currentTeam.find((pokemon:PokemonEntity) => props.pokemon.name === pokemon.name))
     ? 
     false 
     : 

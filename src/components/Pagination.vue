@@ -107,7 +107,7 @@ const pagination = () => {
 }
 
 onMounted(()=>{
-    Pagination.selectedPage.value = route.params.page
+    Pagination.selectedPage.value = Number(route.params.page)
 })
 </script>
 

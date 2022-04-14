@@ -6,6 +6,6 @@ const Api = axios.create({
 
 export default{
     async get(uri: string){
-        return await Api.get(uri)
+        return await Api.get(uri).then(res => res.data)
     }
 }

@@ -11,7 +11,7 @@
         </div>
         <form :class="FormClass.form" action="">
             <label :class="FormClass.label" for="">Create Team</label>
-            <input v-model="FormData.teamName.value" :class="FormClass.inputText" type="text" placeholder="Insert a team name">   
+            <input v-model="FormData.teamName.value" :class="FormClass.inputText" type="text" placeholder="Insert a team name" autofocus>   
             <router-link v-on:click.prevent.stop="storeCurrentTeamObject" :to="{name:'CreatePickBoard', params:{team:FormData.teamName.value, page:1}}">
                 <input :class="FormClass.inputSubmit" type="submit" value="Register">
             </router-link>   
@@ -23,7 +23,7 @@
 import { ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { useStore } from 'vuex'
-import TeamEntity from '@/entities/Team.ts'
+import TeamEntity from '../entities/Team'
 
 const route  = useRoute()
 const store = useStore()
@@ -60,6 +60,7 @@ const storeCurrentTeamObject = () => {
 }
 
 onMounted(()=>{
+    document.querySelector('[type="text"]').focus()
     store.commit('setCurrentPage', 1)
 })
 </script>

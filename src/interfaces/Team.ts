@@ -1,9 +1,7 @@
-interface Team {
+export default interface Team {
     name: string,
-    team: object[],
-    createdAt: Date,
-    updatedAt: Date,
+    team: Array<object>,
+    createdAt: number,
+    updatedAt: number,
     rating: number
 }
-
-export default Team

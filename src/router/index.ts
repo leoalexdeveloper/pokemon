@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import ViewTeam from '@/views/ViewTeam.vue'
+import ViewTeam from '../views/ViewTeam.vue'
 
 const routes = [
     {path:'/', name:'ViewTeam', component: ViewTeam},

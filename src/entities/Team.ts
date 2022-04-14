@@ -1,13 +1,14 @@
-import TeamInterface from '@//interfaces/Team.ts'
+import TeamInterface from '../interfaces/Team'
+import PokemonInterface from '../interfaces/Pokemon'
 import { v4 as uuidv4 } from 'uuid'
 
 export default class Team implements TeamInterface{
-    private uuid: string
-    private createdAt: Date
-    public updatedAt: Date
+    public uuid: string
+    public createdAt: number
+    public updatedAt: number
     constructor(
         public name: string = '',
-        public team: object[] = [],
+        public team: Array<PokemonInterface> = [],
         public rating: number = 1
     ){
         this.uuid = uuidv4()

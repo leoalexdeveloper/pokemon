@@ -24,8 +24,9 @@
 <script lang="ts" setup>
 import { useStore } from 'vuex'
 import { useRoute } from 'vue-router'
-
-import { ref, onMounted, onUpdated } from 'vue'
+import { ref } from 'vue'
+import PokemonListEntity from '../entities/PokemonList'
+import TeamEntity from '../entities/Team'
 
 const store = useStore()
 const route = useRoute()
@@ -41,7 +42,7 @@ const CreateTeam = {
     teamName:ref<string>(String(route.params.team))
 }
 
-const scrollHide = () => {
+/* const scrollHide = () => {
     
     const scrollCoords:number[] = []
     const navBarElement = document.querySelector('.navbar-container')
@@ -55,19 +56,11 @@ const scrollHide = () => {
         }
         if(scrollCoords.length > 5) scrollCoords.shift()
     }
-}
+} */
 
 const checkSavedTeams = () => {
-    return Object.keys(store.state.createTeam.savedTeams).find((key: object) => store.state.createTeam.savedTeams[key].uuid === store.state.createTeam.currentTeamObject.uuid) ? true : false
+    return Object.keys(store.state.createTeam.savedTeams).find((key: string) => store.state.createTeam.savedTeams[key].uuid === store.state.createTeam.currentTeamObject.uuid) ? true : false
 }
-
-onMounted(()=>{
-    //scrollHide()
-})
-
-onUpdated(()=>{
-    console.log(route.params)
-})
 </script>
 
 <style>
@@ -86,6 +79,5 @@ onUpdated(()=>{
 </style>
 
 <style scoped>
-.conrtainer{
-}
+
 </style>
