@@ -49,6 +49,6 @@ onBeforeMount(()=>{
     }
   
   .createTeam{
-      height:100vh;
+      height:auto;
   }
 </style>

@@ -35,7 +35,7 @@ onBeforeMount(()=>{
 .container{
     max-width: auto;
     min-width: 800px;
-    height:100%;
+    height:auto;
     background-color: rgba(255,255,255,0.2);
 }
 </style>

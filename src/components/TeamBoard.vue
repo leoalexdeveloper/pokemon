@@ -99,7 +99,8 @@ const validate = () => {
 }
 
 const countTeamPokemons = () => {
-    const count = store.state.createTeam.maxSlotNumber - store.state.createTeam.currentTeamObject.team.length
+    const count = store.state.createTeam.maxSlotNumber - store.state.createTeam.currentTeam.length
+    console.log(count)
     if(count < 1){
         return 'Great job! Click on save to store this team.'
     }else{

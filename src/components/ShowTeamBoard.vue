@@ -26,7 +26,7 @@
                 </div>
             </div>
         </div>
-        <div v-if="!checkSavedTeams()" class="container border p-5 text-center text-dark lead rounded-4 rounded lead fs-1 bg-light mt-5">
+        <div v-if="!checkSavedTeams()" class="container border p-5 text-center text-dark lead rounded-4 rounded lead fs-1 mt-5" style="background-color: rgba(255,255,255,0.8)">
             <div class="empty-msg">Mount your team!</div>
         </div>
     </div>
@@ -49,7 +49,7 @@ const ShowViewBoard = {
     pokeContainer:"p-2 col-10 rounded d-flex justify-content-between",
     pokeCard: "w-25 mx-2 border p-2 rounded",
     imgContainer:"w-100 d-flex justify-content-center align-items-center",
-    name:"poke-name rounded-top lead text-center bg-primary text-light",
+    name:"poke-name rounded-top lead text-center bg-primary text-light fs-6 py-1",
     image:"image img-fluid w-100",
     btnContainer: "col-2 btn-container d-flex flex-column justify-content-start align-items-center",
     btn: "w-75 save btn btn-sm btn-primary",
