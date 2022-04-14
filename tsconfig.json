@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "noImplicitAny": true,
+    "noImplicitAny": false,
     "skipLibCheck": true,
     "target": "esnext",
     "useDefineForClassFields": true,

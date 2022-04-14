@@ -21,11 +21,12 @@
                 <dl :class="CardClasses.detailContainerListLeft" style="line-height:0.5rem">
                     <dt :class="[CardClasses.detailsTitles, 'text-dark']">Types</dt>
                     <dd :class="[CardClasses.detailsInfos, 'text-dark']" style="width: auto; height:1rem; font-size:0.7rem" 
-                        v-for:="types in (pokemonDetails[String(pokemon.id)]?.types as Array<PokemonDetailEntity['types']>)">{{(types.type.name)}}</dd>
+                        v-for:="types in (pokemonDetails[pokemon.id]?.types as Array<PokemonDetailEntity['types']>)">
+                        {{(types.type.name)}}</dd>
                         <br>
                     <dt  :class="[CardClasses.detailsTitles, 'text-dark']" >Abilities</dt>
                     <dd :class="[CardClasses.detailsInfos, 'text-dark']" style="width: auto; height:1rem; font-size: 0.7rem" 
-                        v-for:="abilities in (pokemonDetails[String(pokemon.id)]?.abilities as Array<PokemonDetailEntity['abilities']>)">
+                        v-for:="abilities in (pokemonDetails[pokemon.id]?.abilities as Array<PokemonDetailEntity['abilities']>)">
                         {{abilities.ability.name}}
                         
                     </dd>      
@@ -33,7 +34,8 @@
                 <dl :class="CardClasses.detailContainerListRight" style="line-height:0.6rem">
                     <dt  :class="[CardClasses.detailsTitles, 'text-light']">Stats</dt>
                      <dd :class="[CardClasses.detailsInfos, 'text-light']" style="width: auto; height:1rem; font-size: 0.7rem" 
-                       v-for:="stats in (pokemonDetails[String(pokemon.id)]?.stats as Array<PokemonDetailEntity['stats']>)">{{stats.stat.name}}: {{stats.base_stat}}
+                       v-for:="stats in (pokemonDetails[pokemon.id]?.stats as Array<PokemonDetailEntity['stats']>)">
+                       {{stats.stat.name}}: {{stats.base_stat}}
                     </dd>
                 </dl>
             </div>
@@ -97,7 +99,9 @@ const closeDetails = (e:any) => {
 const pokemonDetails = reactive<PokemonDetailEntity>(store.state.createTeam.pokemonDetail)
 
 const getPokemonDetail = (card: object) => {
+    
     store.dispatch('getPokemonDetail', props.pokemon.id)
+    console.log(pokemonDetails)
 }
 
 const choosePokemon = (e:any) => {
