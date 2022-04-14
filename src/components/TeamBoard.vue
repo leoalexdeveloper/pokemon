@@ -38,7 +38,7 @@
 </template>
 
 <script lang="ts" setup>
-import { reactive, ref } from 'vue'
+import { reactive, ref, onMounted } from 'vue'
 import { useStore } from 'vuex'
 import { useRoute } from 'vue-router'
 import TeamEntity from  '../entities/Team'
@@ -110,14 +110,19 @@ const countTeamPokemons = () => {
 const changeNameBox = () => {
     Pokemon.editName.value = !Pokemon.editName.value
 }
+
+onMounted(()=>{
+    scroll()
+})
 </script>
 
 <style scoped>
 
 .team-container{
+    min-width: 800px;
     z-index: 2;
 }
 .card-container{
-    background-color: rgba(255,255,255,0.2);
+    background-color: rgba(255,255,255,0.8)
 }
 </style>

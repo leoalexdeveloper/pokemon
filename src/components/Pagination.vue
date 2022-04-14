@@ -74,7 +74,7 @@ const route = useRoute()
 const currentTeam = reactive(store.state.createTeam.currentTeamObject)
 
 const PaginationClasses = {
-    container: "pagination-container position-sticky bottom-0 w-25 rounded-top d-flex justify-content-center",
+    container: "pagination-container position-sticky bottom-0 w-25 rounded-top d-flex justify-content-center bg-light",
     btn: "btn btn-light text-primary rounded-0 border",
     li: "page-item rounded-0",
     a: "page-link rounded-0"

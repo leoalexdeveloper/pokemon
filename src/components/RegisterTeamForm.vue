@@ -31,9 +31,9 @@ const store = useStore()
 const FormClass = {
     container:"container mt-5",
     form:"form col-6 m-auto border p-4 d-flex flex-column rounded",
-    label:"form-label",
-    inputText:"form-control",
-    inputSubmit:"form-submit col-12 btn btn-primary mt-3",
+    label:"form-label fs-5",
+    inputText:"form-control py-2",
+    inputSubmit:"form-submit col-12 btn btn-primary mt- fs-5 mt-3",
     alert:"col-6 alert d-flex align-items-center border text-light m-auto"
 }
 

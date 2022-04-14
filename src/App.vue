@@ -12,7 +12,7 @@ const store = useStore()
 
 <style>
 html{
-    font-size: 12px;
+    font-size: 16px;
 }
 body{
     width:100vw;

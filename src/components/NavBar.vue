@@ -25,15 +25,13 @@
 import { useStore } from 'vuex'
 import { useRoute } from 'vue-router'
 import { ref } from 'vue'
-import PokemonListEntity from '../entities/PokemonList'
-import TeamEntity from '../entities/Team'
 
 const store = useStore()
 const route = useRoute()
 
 const NavBarClass = {
-    container:"navbar-container container w-100 rounded-bottom position-sticky top-0 start-0 d-flex justify-content-end",
-    nav:"nav-bar w-100",
+    container:"navbar-container container rounded-bottom position-sticky top-0 start-0 d-flex justify-content-end",
+    nav:"nav-bar",
     ul: "list-unstyled d-flex justify-content-center",
     li:"btn m-2"
 }
@@ -42,22 +40,6 @@ const CreateTeam = {
     teamName:ref<string>(String(route.params.team))
 }
 
-/* const scrollHide = () => {
-    
-    const scrollCoords:number[] = []
-    const navBarElement = document.querySelector('.navbar-container')
-    
-    window.onscroll = () => {
-        scrollCoords.push(window.scrollY)
-        if(scrollCoords[0] > scrollCoords[4]){
-            navBarElement.classList.remove('navBarHidden')
-        }else{
-            navBarElement.classList.add('navBarHidden')
-        }
-        if(scrollCoords.length > 5) scrollCoords.shift()
-    }
-} */
-
 const checkSavedTeams = () => {
     return Object.keys(store.state.createTeam.savedTeams).find((key: string) => store.state.createTeam.savedTeams[key].uuid === store.state.createTeam.currentTeamObject.uuid) ? true : false
 }
@@ -65,10 +47,10 @@ const checkSavedTeams = () => {
 
 <style>
 .navbar-container{
-    max-width:1120px;
+    max-width:1299px;
     z-index:10;
-    height: 3.5rem;
-    background-color: rgba(255,255,255,0.2);
+    height: 4rem;
+    background-color: rgba(255,255,255,0.8);
     transition: transform 0.2s cubic-bezier(.18,.81,.77,.94);
     transform-origin: top;
     transform: translateY(0%);

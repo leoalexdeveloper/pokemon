@@ -19,10 +19,10 @@ const TeamBoardClasses = {
 
 <style>
 .slot{
-    max-width: 120px;
-    min-width: 120px;
+    max-width: 150px;
+    min-width: 150px;
     height:auto;
-    min-height:150px;
+    min-height:180px;
     font-size: 2rem;
     color: #dedede;
 }

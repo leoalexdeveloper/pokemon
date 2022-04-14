@@ -16,24 +16,24 @@
         </article>
         <article :class="CardClasses.back"> 
             <button v-on:click="closeDetails" 
-                    :class="CardClasses.backFlipButton">&#x21b2;</button>
-            <div :class="CardClasses.detailContainer">
-                <dl :class="CardClasses.detailContainerListLeft" style="line-height:0.5rem">
+                    :class="CardClasses.backFlipButton">&#x21b2;Back</button>
+            <div :class="CardClasses.detailContainer" style="line-height:1rem;">
+                <dl :class="CardClasses.detailContainerListLeft">
                     <dt :class="[CardClasses.detailsTitles, 'text-dark']">Types</dt>
-                    <dd :class="[CardClasses.detailsInfos, 'text-dark']" style="width: auto; height:1rem; font-size:0.7rem" 
+                    <dd :class="[CardClasses.detailsInfos, 'text-dark']" style="width: auto; height:1.2rem; font-size:0.8rem" 
                         v-for:="types in (pokemonDetails[pokemon.id]?.types as Array<PokemonDetailEntity['types']>)">
                         {{(types.type.name)}}</dd>
                         <br>
                     <dt  :class="[CardClasses.detailsTitles, 'text-dark']" >Abilities</dt>
-                    <dd :class="[CardClasses.detailsInfos, 'text-dark']" style="width: auto; height:1rem; font-size: 0.7rem" 
+                    <dd :class="[CardClasses.detailsInfos, 'text-dark']" style="width: auto; height:1.2rem; font-size: 0.8rem; line-height:1rem;" 
                         v-for:="abilities in (pokemonDetails[pokemon.id]?.abilities as Array<PokemonDetailEntity['abilities']>)">
                         {{abilities.ability.name}}
                         
                     </dd>      
                 </dl>
-                <dl :class="CardClasses.detailContainerListRight" style="line-height:0.6rem">
+                <dl :class="CardClasses.detailContainerListRight" style="line-height:1rem; height:100vh;">
                     <dt  :class="[CardClasses.detailsTitles, 'text-light']">Stats</dt>
-                     <dd :class="[CardClasses.detailsInfos, 'text-light']" style="width: auto; height:1rem; font-size: 0.7rem" 
+                     <dd :class="[CardClasses.detailsInfos, 'text-light']" style="width: auto; height:1.2rem; font-size: 0.8rem;" 
                        v-for:="stats in (pokemonDetails[pokemon.id]?.stats as Array<PokemonDetailEntity['stats']>)">
                        {{stats.stat.name}}: {{stats.base_stat}}
                     </dd>
@@ -56,22 +56,22 @@ import utils from '../utils/utils'
 const store = useStore()
 
 const CardClasses = {
-    container: "card-container rounded overflow-hidden d-flex",
-    img: "w-100 card-image img-thumbnail rounded-0 mb-3",
-    p: "w-100 text-light fs-6 lead d-flex justify-content-center bg-primary rounded-top p-1",
-    btnContainer: "card-btn-container w-100",
-    btnPrimary: " w-100 btn btn-sm btn-primary p-0 rounded-0",
-    btnSecondary: "w-100 btn btn-sm btn-secondary p-0 rounded-0 rounded-bottom",
+    container: "card-container rounded overflow-hidden d-flex border p-0",
+    img: "w-100 card-image img-thumbnail rounded-0 mb-2",
+    p: "w-100 text-light fs-5 lead d-flex justify-content-center bg-primary rounded-top p-1 mb-2",
+    btnContainer: "card-btn-container w-100 fs-4",
+    btnPrimary: " w-100 btn btn-sm btn-primary rounded-0 fs-6",
+    btnSecondary: "w-100 btn btn-sm btn-secondary  rounded-0 rounded-bottom fs-6",
     front: "card-front border rounded bg-light p-2 d-flex flex-column justify-content-between align-items-center",
     back: "card-back border rounded bg-light rounded p-0",
     detailContainer: "p-0 d-flex flex-row",
-    detailContainerListLeft: "list-unstyled p-1 col-5 mt-4",
-    detailsTitles: "h6",
-    detailsInfos: "p-1",
+    detailContainerListLeft: "list-unstyled p-1 col-5 mt-5",
+    detailsTitles: "h6 p-1",
+    detailsInfos: "p-0 lead p-1",
     rightDetailsTitles: "",
-    detailContainerListRight: "list-unstyled p-1 col-7 bg-primary pb-5",
+    detailContainerListRight: "list-unstyled p-1 col-8 bg-primary mt-3",
     statsContainer: "p-0",
-    backFlipButton: "btn btn-sm rounded-0 position-absolute top-0 start-0 mx-0 my-0 bg-light px-2 text-primary"
+    backFlipButton: "btn btn-sm rounded-0 position-absolute top-0 start-0 mx-0 my-0 bg-light px-2 text-primary fs-5"
 }
 
 const props = defineProps({
@@ -125,23 +125,21 @@ const hiddenChooseBtn = () => {
 <style scoped>
 .card-container{
     position:relative;
-    width:150px;
-    height:200px;
+    width:210px;
+    height:300px;
     perspective: 2000px;
-}
-.card-sub{
-    height: auto;
 }
 .card-image{
     width:90%;
-    height:80px;
+    height:150px;
     object-fit: contain;
     object-position: center;
 }
 .card-front,
 .card-back{
     width:100%;
-    max-height:auto;
+    min-height:300px;
+    max-height:300px;
     position:absolute;
     top:0;
     left:0;

@@ -43,18 +43,18 @@ const removeFromSlot = (index: number) => {
 
 <style>
 .card{
-    max-width: 120px;
-    min-width: 120px;
-    max-height: 130px;
+    max-width: 150px;
+    min-width: 150px;
+    max-height: 190px;
 }
 .card-img{
     
-    max-height: 65px;
+    max-height: 100px;
     height:auto;
     object-fit:contain;
     object-position: center;
 }
 .btn-remove{
-    font-size: .8rem;
+    font-size: 1rem;
 }
 </style>
