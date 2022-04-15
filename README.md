@@ -2,7 +2,7 @@
 
 This an study over Vuejs using the Pokeapi.
 
-##Description
+## Description
 
 Its possible to request pokemons from api and make teams with them, also, the user can edit end delete created teams.
 
