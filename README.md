@@ -11,3 +11,4 @@
 -- All informations stay on LocalStorage using vue-persistent package.
 
 ![Vercel](https://therealsujitk-vercel-badge.vercel.app/?app=pokedex-phi-woad.vercel.app)
+https://img.shields.io/badge/Linkedin-leoalexdeveloper-green
