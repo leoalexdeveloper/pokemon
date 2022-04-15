@@ -18,7 +18,8 @@
                    :placeholder="store.state.createTeam.currentTeamObject.name" 
                    :class="FormClass.inputText" 
                    type="text" 
-                   placeholder="Insert a team name">
+                   placeholder="Insert a team name"
+                   autofocus>
             
             <router-link v-on:click.prevent.stop="changeTeamName"      
                         :to="{name:'EditPickBoard', params:{team:FormData.teamName.value, page:1}}">
@@ -78,7 +79,7 @@ const closeChangeTeamNameBox = () => {
 }
 
 onMounted(()=>{
-    document.querySelector('[type="text"]').focus()
+    //document.querySelector('[type="text"]').focus()
     store.commit('setCurrentPage', 1)
 })
 </script>
