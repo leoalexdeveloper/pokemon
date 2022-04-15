@@ -5,8 +5,8 @@
             <div :class="ShowViewBoard.teamContainer">
                 <div :class="ShowViewBoard.teamName">
                     <p :class="ShowViewBoard.teamNameP" class="col-4 rounded-start">Team: {{utils.firstNameCaps(team.name)}}</p>
-                    <p :class="ShowViewBoard.teamNameP" class="col-4">Created at: {{String(new Date(team.createdAt)).substring(4,24)}}</p>
-                    <p :class="ShowViewBoard.teamNameP" class="col-4 rounded-end">Updated at: {{String(new Date(team.updatedAt)).substring(4,24)}}</p>
+                    <p :class="ShowViewBoard.teamNameP" class="col-4">Created at: {{utils.returnFormatedTimestamp(team.createdAt)}}</p>
+                    <p :class="ShowViewBoard.teamNameP" class="col-4 rounded-end">Updated at: {{utils.returnFormatedTimestamp(team.updatedAt)}}</p>
                 </div>
                 <div :class="ShowViewBoard.pokeContainer">
                     <div :class="ShowViewBoard.pokeCard" v-for:="(element, index) in (team.team as Array<PokemonEntity>)">

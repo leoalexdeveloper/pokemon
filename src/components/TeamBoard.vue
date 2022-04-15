@@ -46,6 +46,7 @@ import EmptySlot from '../components/EmptySlot.vue'
 import PokemonSlot from '../components/PokemonSlot.vue'
 import EditPokemonName from '../components/EditPokemonName.vue'
 import utils from '../utils/utils'
+import Team from '../entities/Team'
 
 const store = useStore()
 const route = useRoute()
@@ -74,10 +75,17 @@ const removeFromSlot = (index: number) => {
 const saveTeam = () => {
     if(validate()){
         const savedTeams = {...store.state.createTeam.savedTeams}
+        store.state.createTeam.currentTeamObject.updatedAt = returnUpdateTeamInfo(store.state.createTeam.currentTeam)
         store.state.createTeam.currentTeamObject.team = [...store.state.createTeam.currentTeam]
         savedTeams[store.state.createTeam.currentTeamObject.uuid] = {...store.state.createTeam.currentTeamObject}
         store.commit('saveTeams', {...savedTeams})
         resetCurrentTeamObject()
+    }
+}
+
+const returnUpdateTeamInfo = (team: Team) => {
+    if(route.fullPath.includes('/edit')){
+        return Date.now()
     }
 }
 
