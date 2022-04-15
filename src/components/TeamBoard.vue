@@ -38,7 +38,7 @@
 </template>
 
 <script lang="ts" setup>
-import { reactive, ref, onMounted } from 'vue'
+import { reactive, ref, onMounted, onUpdated } from 'vue'
 import { useStore } from 'vuex'
 import { useRoute } from 'vue-router'
 import TeamEntity from  '../entities/Team'
@@ -58,6 +58,7 @@ const Pokemon = {
     disableEditTeamName: ref<boolean>(false),
     teamName: ref<string>(store.state.createTeam.currentTeamObject.name),
     editName: ref<boolean>(false),
+    modifyTeam: ref(false)
 }
 
 const TeamBoardClasses = {
@@ -75,17 +76,12 @@ const removeFromSlot = (index: number) => {
 const saveTeam = () => {
     if(validate()){
         const savedTeams = {...store.state.createTeam.savedTeams}
-        store.state.createTeam.currentTeamObject.updatedAt = returnUpdateTeamInfo(store.state.createTeam.currentTeam)
+        if(route.fullPath.includes('/create')) store.state.createTeam.currentTeamObject['createdAt'] = Date.now()
+        store.state.createTeam.currentTeamObject['updatedAt'] = Date.now()
         store.state.createTeam.currentTeamObject.team = [...store.state.createTeam.currentTeam]
         savedTeams[store.state.createTeam.currentTeamObject.uuid] = {...store.state.createTeam.currentTeamObject}
         store.commit('saveTeams', {...savedTeams})
         resetCurrentTeamObject()
-    }
-}
-
-const returnUpdateTeamInfo = (team: Team) => {
-    if(route.fullPath.includes('/edit')){
-        return Date.now()
     }
 }
 
@@ -103,16 +99,29 @@ const disableSaveButton = () => {
 }
 
 const validate = () => {
-    return Pokemon.team.length === store.state.createTeam.maxSlotNumber ? true : false
+    return Pokemon.team.length === store.state.createTeam.maxSlotNumber 
+    && Pokemon.modifyTeam.value 
+    ? 
+    true 
+    : 
+    false
 }
 
 const countTeamPokemons = () => {
     const count = store.state.createTeam.maxSlotNumber - store.state.createTeam.currentTeam.length
-    console.log(count)
-    if(count < 1){
-        return 'Great job! Click on save to store this team.'
+    const compareTeams = JSON.stringify(Object.values(Pokemon.teamTemp)) === JSON.stringify(Object.values(Pokemon.team))
+    console.log()
+    
+    if(compareTeams){
+        Pokemon.modifyTeam.value = false
+        return 'Modify your team!'
     }else{
-        return `You could pick ${count} pokemons!`
+        Pokemon.modifyTeam.value = true
+        if(count < 1){
+            return 'Great job! Click on save to store this team.'
+        }else{
+            return `You could pick ${count} pokemons!`
+        }
     }
 }
 
@@ -122,6 +131,11 @@ const changeNameBox = () => {
 
 onMounted(()=>{
     scroll()
+})
+
+onUpdated(()=>{
+    
+
 })
 </script>
 

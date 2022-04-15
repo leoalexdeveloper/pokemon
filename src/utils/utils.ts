@@ -12,6 +12,6 @@ export default{
         const minute = formatBellowZero(date.getMinutes())
         const second = formatBellowZero(date.getSeconds())
         const fractionDayReference = (hour > '00' && hour < 13) ? 'AM' : 'PM' 
-        return(`${day}/${month}/${year} - ${hour}:${minute}:${second} ${fractionDayReference}`)
+        return `${day}/${month}/${year} - ${hour}:${minute}:${second} ${fractionDayReference}`
     }
 }
