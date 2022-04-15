@@ -9,3 +9,5 @@
 -- There's no login mechanics.
 
 -- All informations stay on LocalStorage using vue-persistent package.
+
+![Vercel](https://vercelbadge.vercel.app/api/[leoalexdeveloper]/[pokemon])
