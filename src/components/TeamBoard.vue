@@ -63,8 +63,8 @@ const Pokemon = {
 
 const TeamBoardClasses = {
     container: "team-container container position-sticky top-0 start-0 my-2",
-    panel: "w-100 bg-primary text-light fs-6 p-2 rounded-bottom lead d-flex justify-content-between align-items-center",
-    cardContainer: "card-container d-flex justify-content-evenly mb-2 rounded-top",
+    panel: "w-100 bg-primary text-light fs-6 p-2 rounded-bottom lead d-flex flex-wrap justify-content-between align-items-center",
+    cardContainer: "card-container d-flex flex-wrap justify-content-evenly mb-2 rounded-top",
     card: "card m-2 mt-2 d-flex flex-row",
     alertBox:"border rounded p-1 col-9 text-center d-flex justify-content-evenly"
 }
@@ -112,9 +112,11 @@ const countTeamPokemons = () => {
     const compareTeams = JSON.stringify(Object.values(Pokemon.teamTemp)) === JSON.stringify(Object.values(Pokemon.team))
     console.log()
     
-    if(compareTeams){
+    if(compareTeams && store.state.createTeam.currentTeam.length > 0){
         Pokemon.modifyTeam.value = false
         return 'Modify your team!'
+    }else if(compareTeams && store.state.createTeam.currentTeam.length === 0){
+        return 'Pick some pokemon!'
     }else{
         Pokemon.modifyTeam.value = true
         if(count < 1){
@@ -142,7 +144,7 @@ onUpdated(()=>{
 <style scoped>
 
 .team-container{
-    min-width: 800px;
+    min-width: 600px;
     z-index: 2;
 }
 .card-container{

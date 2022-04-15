@@ -30,8 +30,8 @@ const store = useStore()
 const route = useRoute()
 
 const NavBarClass = {
-    container:"navbar-container container rounded-bottom position-sticky top-0 start-0 d-flex justify-content-end",
-    nav:"nav-bar",
+    container:"navbar-container container-fluid rounded-bottom position-sticky top-0 start-0 d-flex justify-content-center",
+    nav:"nav-bar mx-5",
     ul: "list-unstyled d-flex justify-content-center",
     li:"btn m-2"
 }
@@ -47,13 +47,10 @@ const checkSavedTeams = () => {
 
 <style>
 .navbar-container{
-    max-width:1299px;
+    max-width:auto;
     z-index:10;
     height: 4rem;
     background-color: rgba(255,255,255,0.8);
-    transition: transform 0.2s cubic-bezier(.18,.81,.77,.94);
-    transform-origin: top;
-    transform: translateY(0%);
 }
 .navBarHidden{
     transform:translateY(-100%);

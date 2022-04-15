@@ -46,18 +46,17 @@ const ShowViewBoard = {
     teamContainer: "container-team m-auto p-2 rounded d-flex flex-row flex-wrap justify-content-between align-items-center border",
     teamName: "text-center col-12 d-flex flex-row justify-content-center align-items-center text-light bg-primary rounded",
     teamNameP: "name-p lead fs-5 text-start p-1 d-flex align-items-center justify-content-center mt-3",
-    pokeContainer:"p-2 col-10 rounded d-flex justify-content-between",
-    pokeCard: "w-25 mx-2 border p-2 rounded",
+    pokeContainer:"w-75 p-2 col-10 rounded d-flex flex-wrap justify-content-center",
+    pokeCard: "poke-container mx-1 border p-2 rounded",
     imgContainer:"w-100 d-flex justify-content-center align-items-center",
     name:"poke-name rounded-top lead text-center bg-primary text-light fs-6 py-1",
     image:"image img-fluid w-100",
-    btnContainer: "col-2 btn-container d-flex flex-column justify-content-start align-items-center",
+    btnContainer: "col-3 btn-container d-flex flex-column justify-content-start align-items-center",
     btn: "w-75 save btn btn-sm btn-primary",
     teamEmptyMsg: "background-color: rgba(255,255,255,0.2);"
 }
 
 const teams = reactive<TeamEntity[]>(store.state.createTeam.savedTeams)
-console.log(teams)
 const deleteSavedTeamsItem = (index: number) => {
     const team = store.state.createTeam.savedTeams[String(index)]
     if(window.confirm(`Confirm delete Team ${team.name}?`)){
@@ -82,11 +81,13 @@ const checkSavedTeams = () => {
 
 <style scoped>
 .container{
-    max-width:auto;
-    min-width:800px;
+    min-width:600px;
+    max-width:1300px;
     max-height:auto;
 }
 .container-team{
+    max-width: 1300px;
+    min-width: 400px;
     background-color: rgba(255,255,255,0.8) !important;
 }
 .image{
@@ -101,5 +102,8 @@ const checkSavedTeams = () => {
     display: flex;
     align-items:center;
     justify-content: center;
+}
+.poke-container{
+    width:150px;
 }
 </style>

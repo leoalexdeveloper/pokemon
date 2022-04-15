@@ -11,7 +11,10 @@ const routes = [
             {
                 path:':page?',
                 name: 'CreatePickBoard',
-                component:()=>import(/**webpackChunkName*/'@/components/PickBoard.vue')
+                component:()=>import(/**webpackChunkName*/'@/components/PickBoard.vue'),
+                beforeEnter(to, from){
+                    if(to.params.page > 80) return {name:'PageNotFound'}
+                },
             }
         ]
     },
@@ -26,6 +29,11 @@ const routes = [
                 component:()=>import(/**webpackChunkName*/'@/components/PickBoard.vue'),
             }
         ]
+    },
+    {
+        path:'/:pathMatch(.*)*',
+        name: 'PageNotFound',
+        component: ()=>import(/**webChunkName*/'@/views/PageNotFound.vue')
     }
 ]
 

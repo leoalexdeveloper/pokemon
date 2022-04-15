@@ -56,7 +56,7 @@ import utils from '../utils/utils'
 const store = useStore()
 
 const CardClasses = {
-    container: "card-container rounded overflow-hidden d-flex p-0",
+    container: "card-container rounded overflow-hidden d-flex p-0 mb-2",
     img: "w-100 card-image img-thumbnail rounded-0 mb-2",
     p: "w-100 text-light fs-5 lead d-flex justify-content-center bg-primary rounded-top p-1 mb-2",
     btnContainer: "card-btn-container w-100 fs-4",

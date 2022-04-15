@@ -66,7 +66,7 @@
 <script lang="ts" setup>
 import { ref, reactive, onMounted, watch, defineEmits } from 'vue'
 import { useStore } from 'vuex'
-import { useRoute } from 'vue-router'
+import { useRoute, onBeforeRouteLeave } from 'vue-router'
 
 const store = useStore()
 const route = useRoute()

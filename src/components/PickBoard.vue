@@ -16,7 +16,7 @@ const store = useStore()
 const route = useRoute()
 
 const PickBoardClasses = {
-    container: "container pickboard-container container d-flex flex-row flex-wrap justify-content-between p-2"
+    container: "container pickboard-container container d-flex flex-row flex-wrap justify-content-evenly p-2"
 }
 
 const requestPokemons = (range: number[]) => {
@@ -34,7 +34,7 @@ onBeforeMount(()=>{
 <style scoped>
 .container{
     max-width: auto;
-    min-width: 800px;
+    min-width: 600px;
     height:auto;
     background-color: rgba(255,255,255,0.2);
 }

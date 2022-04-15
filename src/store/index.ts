@@ -31,7 +31,7 @@ export default createStore({
                     maxElementsToShow: 14 as number,
                     currentPage: 1 as number,
                     selectedRange: [] as number[],
-                    maxSlotNumber: 4 as number,
+                    maxSlotNumber: 5 as number,
                 }
             },
             mutations:{

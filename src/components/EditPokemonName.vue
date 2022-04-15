@@ -78,7 +78,7 @@ const closeChangeTeamNameBox = () => {
 }
 
 onMounted(()=>{
-    //document.querySelector('[type="text"]').focus()
+    document.querySelector('[type="text"]').focus()
     store.commit('setCurrentPage', 1)
 })
 </script>
