@@ -10,4 +10,4 @@
 
 -- All informations stay on LocalStorage using vue-persistent package.
 
-![Vercel](https://vercelbadge.vercel.app/api/[leoalexdeveloper]/[pokemon])
+![Vercel](https://therealsujitk-vercel-badge.vercel.app/?app={pokedex-phi-woad.vercel.app})
