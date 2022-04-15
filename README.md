@@ -1,4 +1,4 @@
-# pokemon
+# Pokemon
 
 This an study over Vuejs using the Pokeapi.
 
