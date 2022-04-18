@@ -1,12 +1,13 @@
 <template>
     <div :class="ShowViewBoard.container">
         <div v-if="checkSavedTeams()" 
-             v-for:="(team, index, order) in teams" class="my-1 mt-3 p-2 d-flex align-items-start justify-content-center rounded ">
+             v-for:="(team, index) in (reverseTeam())" class="my-1 mt-3 p-2 d-flex align-items-start justify-content-center rounded ">
             <div :class="ShowViewBoard.teamContainer">
                 <div :class="ShowViewBoard.teamName">
-                    <p :class="ShowViewBoard.teamNameP" class="col-4 rounded-start">Team: {{utils.firstNameCaps(team.name)}}</p>
+                    <p :class="ShowViewBoard.teamNameP" class="col-1 text-dark justify-content-center bg-light rounded-end">Id:{{index+1}}</p>
+                    <p :class="ShowViewBoard.teamNameP" class="col-3 rounded-start text-start">Team: {{utils.firstNameCaps(team.name)}}</p>
                     <p :class="ShowViewBoard.teamNameP" class="col-4">Created at: {{utils.returnFormatedTimestamp(team.createdAt)}}</p>
-                    <p :class="ShowViewBoard.teamNameP" class="col-4 rounded-end">Updated at: {{utils.returnFormatedTimestamp(team.updatedAt)}}</p>
+                    <p :class="ShowViewBoard.teamNameP" class="col-4">Updated at: {{utils.returnFormatedTimestamp(team.updatedAt)}}</p>
                 </div>
                 <div :class="ShowViewBoard.pokeContainer">
                     <div :class="ShowViewBoard.pokeCard" v-for:="(element, index) in (team.team as Array<PokemonEntity>)">
@@ -22,7 +23,7 @@
                     <router-link  class="w-100 mx-0 d-flex justify-content-center" v-on:click="storeEditableTeam(index)" :to="{name:'EditPickBoard', params:{team:team.name, page:1}}">
                         <button :class="[ShowViewBoard.btn, 'btn-primary']">Edit</button>
                     </router-link>
-                    <button v-on:click="deleteSavedTeamsItem(index)" :class="[ShowViewBoard.btn, 'btn-danger', 'mt-2']">Delete</button>
+                    <button v-on:click="deleteSavedTeamsItem(team)" :class="[ShowViewBoard.btn, 'btn-danger', 'mt-2']">Delete</button>
                 </div>
             </div>
         </div>
@@ -33,7 +34,7 @@
 </template>
 
 <script lang="ts" setup>
-import { reactive } from 'vue'
+import { reactive, watch, onMounted } from 'vue'
 import { useStore } from 'vuex'
 import TeamEntity from  '../entities/Team'
 import utils from '../utils/utils'
@@ -44,8 +45,8 @@ const store = useStore()
 const ShowViewBoard = {
     container: "container mt-2 py-2",
     teamContainer: "container-team m-auto p-2 rounded d-flex flex-row flex-wrap justify-content-between align-items-center border",
-    teamName: "text-center col-12 d-flex flex-row justify-content-center align-items-center text-light bg-primary rounded",
-    teamNameP: "name-p lead fs-5 text-start p-1 d-flex align-items-center justify-content-center mt-3",
+    teamName: "text-center col-12 d-flex flex-row justify-content-evenly align-items-center text-light bg-primary rounded",
+    teamNameP: "name-p lead fs-5 text-start p-1 d-flex align-items-center justify-content-evenly mt-3",
     pokeContainer:"w-75 p-2 col-10 rounded d-flex flex-wrap justify-content-center",
     pokeCard: "poke-container mx-1 border p-2 rounded",
     imgContainer:"w-100 d-flex justify-content-center align-items-center",
@@ -57,10 +58,11 @@ const ShowViewBoard = {
 }
 
 const teams = reactive<TeamEntity[]>(store.state.createTeam.savedTeams)
-const deleteSavedTeamsItem = (index: number) => {
-    const team = store.state.createTeam.savedTeams[String(index)]
+const teamSorted = reactive({})
+
+const deleteSavedTeamsItem = (team:TeamEntity) => {
     if(window.confirm(`Confirm delete Team ${team.name}?`)){
-        store.commit('deleteSavedTeamsItem', index)
+        store.commit('deleteSavedTeamsItem', team.uuid)
         store.commit('clearCurrentTeam')
         if(store.state.createTeam.currentTeamObject.uuid === team.uuid){
             store.commit('setCurrentTeamObject', new TeamEntity())
@@ -77,6 +79,19 @@ const storeEditableTeam = (uuid: number) => {
 const checkSavedTeams = () => {
     return Object.keys({...store.state.createTeam.savedTeams}).length > 0 ? true : false
 }
+
+const reverseTeam = () => {
+    const teamsTemp:TeamEntity[] = []
+    const newSort = {}
+    Object.values(teams).forEach((team:TeamEntity) => {
+        teamsTemp.push(team)
+    })
+    return teamsTemp.reverse()
+}
+
+onMounted(()=>{
+  
+})
 </script>
 
 <style scoped>

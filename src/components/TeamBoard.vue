@@ -38,7 +38,7 @@
 </template>
 
 <script lang="ts" setup>
-import { reactive, ref, onMounted, onUpdated } from 'vue'
+import { reactive, ref, onMounted, onUpdated, watch } from 'vue'
 import { useStore } from 'vuex'
 import { useRoute } from 'vue-router'
 import TeamEntity from  '../entities/Team'
@@ -46,17 +46,19 @@ import EmptySlot from '../components/EmptySlot.vue'
 import PokemonSlot from '../components/PokemonSlot.vue'
 import EditPokemonName from '../components/EditPokemonName.vue'
 import utils from '../utils/utils'
+import PokemonEntity from '../entities/Pokemon'
 import Team from '../entities/Team'
 
 const store = useStore()
 const route = useRoute()
 
 const Pokemon = {
-    team: reactive(store.state.createTeam.currentTeam),
-    teamTemp: {...store.state.createTeam.currentTeam},
+    team: reactive(store.state.createTeam.currentTeam) as PokemonEntity,
+    teamTemp: {...store.state.createTeam.currentTeam} as PokemonEntity,
     validTeam: ref<boolean>(false),
     disableEditTeamName: ref<boolean>(false),
     teamName: ref<string>(store.state.createTeam.currentTeamObject.name),
+    teamNameTemp: store.state.createTeam.currentTeamObject.name,
     editName: ref<boolean>(false),
     modifyTeam: ref(false)
 }
@@ -99,7 +101,7 @@ const disableSaveButton = () => {
 }
 
 const validate = () => {
-    return Pokemon.team.length === store.state.createTeam.maxSlotNumber 
+    return Object.values(Pokemon.team).length === store.state.createTeam.maxSlotNumber 
     && Pokemon.modifyTeam.value 
     ? 
     true 
@@ -107,15 +109,24 @@ const validate = () => {
     false
 }
 
+watch(store.state.createTeam.currentTeamObject, (v, n, z)=>{
+    Pokemon.modifyTeam.value = true
+})
+
 const countTeamPokemons = () => {
     const count = store.state.createTeam.maxSlotNumber - store.state.createTeam.currentTeam.length
-    const compareTeams = JSON.stringify(Object.values(Pokemon.teamTemp)) === JSON.stringify(Object.values(Pokemon.team))
-    console.log()
-    
-    if(compareTeams && store.state.createTeam.currentTeam.length > 0){
+    const compareTeams:boolean[] = []
+    Object.values(Pokemon.teamTemp).forEach((pokemon:PokemonEntity) => {
+        Object.values(Pokemon.team).forEach((pk:PokemonEntity) => {
+            if(pokemon.name === pk.name) compareTeams.push(true)
+        })
+    })
+    if(Pokemon.modifyTeam.value === false && compareTeams.length === store.state.createTeam.maxSlotNumber &&
+    String(route.fullPath).includes('/edit')){
         Pokemon.modifyTeam.value = false
         return 'Modify your team!'
     }else if(compareTeams && store.state.createTeam.currentTeam.length === 0){
+        Pokemon.modifyTeam.value = false
         return 'Pick some pokemon!'
     }else{
         Pokemon.modifyTeam.value = true

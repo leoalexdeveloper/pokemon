@@ -57,7 +57,9 @@ export default createStore({
                     state.currentTeam.splice(index, 1)
                 },
                 saveTeams(state, team){
+                    
                     Object.assign(state.savedTeams, {...team})
+                    console.log(state.savedTeams)
                 },
                 deleteSavedTeamsItem(state, index: string){ 
                     delete state.savedTeams[index]

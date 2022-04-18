@@ -60,7 +60,8 @@ const storeCurrentTeamObject = () => {
 }
 
 onMounted(()=>{
-    //document.querySelector('[type="text"]').focus()
+    const createTeamInput = document.querySelector('[type="text"]') as HTMLInputElement
+    createTeamInput.focus()
     store.commit('setCurrentPage', 1)
 })
 </script>
