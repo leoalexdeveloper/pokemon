@@ -20,7 +20,7 @@
                     </div>
                 </div>
                 <div :class="ShowViewBoard.btnContainer">
-                    <router-link  class="w-100 mx-0 d-flex justify-content-center" v-on:click="storeEditableTeam(index)" :to="{name:'EditPickBoard', params:{team:team.name, page:1}}">
+                    <router-link  class="w-100 mx-0 d-flex justify-content-center" v-on:click="storeEditableTeam(team)" :to="{name:'EditPickBoard', params:{team:team.name, page:1}}">
                         <button :class="[ShowViewBoard.btn, 'btn-primary']">Edit</button>
                     </router-link>
                     <button v-on:click="deleteSavedTeamsItem(team)" :class="[ShowViewBoard.btn, 'btn-danger', 'mt-2']">Delete</button>
@@ -61,6 +61,7 @@ const teams = reactive<TeamEntity[]>(store.state.createTeam.savedTeams)
 const teamSorted = reactive({})
 
 const deleteSavedTeamsItem = (team:TeamEntity) => {
+    console.log(team)
     if(window.confirm(`Confirm delete Team ${team.name}?`)){
         store.commit('deleteSavedTeamsItem', team.uuid)
         store.commit('clearCurrentTeam')
@@ -70,8 +71,9 @@ const deleteSavedTeamsItem = (team:TeamEntity) => {
     }
 }
 
-const storeEditableTeam = (uuid: number) => {
-    const editableTeamUuid: string | any = Object.keys(store.state.createTeam.savedTeams).find((key:string) => key === String(uuid))
+const storeEditableTeam = (team:TeamEntity) => {
+    const editableTeamUuid: string | any = Object.keys(store.state.createTeam.savedTeams).find((key:string) => key === String(team.uuid))
+    console.log(editableTeamUuid)
     store.commit('setCurrentTeamObject', {...store.state.createTeam.savedTeams[editableTeamUuid]})
     store.commit('setCurrentTeam', [...store.state.createTeam.savedTeams[editableTeamUuid].team])
 }

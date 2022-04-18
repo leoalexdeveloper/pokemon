@@ -58,7 +58,6 @@ const Pokemon = {
     validTeam: ref<boolean>(false),
     disableEditTeamName: ref<boolean>(false),
     teamName: ref<string>(store.state.createTeam.currentTeamObject.name),
-    teamNameTemp: store.state.createTeam.currentTeamObject.name,
     editName: ref<boolean>(false),
     modifyTeam: ref(false)
 }
@@ -102,54 +101,29 @@ const disableSaveButton = () => {
 
 const validate = () => {
     return Object.values(Pokemon.team).length === store.state.createTeam.maxSlotNumber 
-    && Pokemon.modifyTeam.value 
+    && Pokemon.modifyTeam.value
     ? 
     true 
     : 
     false
 }
 
-watch(store.state.createTeam.currentTeamObject, (v, n, z)=>{
-    Pokemon.modifyTeam.value = true
-})
-
 const countTeamPokemons = () => {
     const count = store.state.createTeam.maxSlotNumber - store.state.createTeam.currentTeam.length
     const compareTeams:boolean[] = []
-    Object.values(Pokemon.teamTemp).forEach((pokemon:PokemonEntity) => {
-        Object.values(Pokemon.team).forEach((pk:PokemonEntity) => {
-            if(pokemon.name === pk.name) compareTeams.push(true)
-        })
-    })
-    if(Pokemon.modifyTeam.value === false && compareTeams.length === store.state.createTeam.maxSlotNumber &&
-    String(route.fullPath).includes('/edit')){
-        Pokemon.modifyTeam.value = false
-        return 'Modify your team!'
-    }else if(compareTeams && store.state.createTeam.currentTeam.length === 0){
-        Pokemon.modifyTeam.value = false
-        return 'Pick some pokemon!'
+   
+   
+    Pokemon.modifyTeam.value = true
+    if(count < 1){
+        return 'Great job! Click on save to store this team.'
     }else{
-        Pokemon.modifyTeam.value = true
-        if(count < 1){
-            return 'Great job! Click on save to store this team.'
-        }else{
-            return `You could pick ${count} pokemons!`
-        }
+        return `You could pick ${count} pokemons!`
     }
 }
 
 const changeNameBox = () => {
     Pokemon.editName.value = !Pokemon.editName.value
 }
-
-onMounted(()=>{
-    scroll()
-})
-
-onUpdated(()=>{
-    
-
-})
 </script>
 
 <style scoped>
