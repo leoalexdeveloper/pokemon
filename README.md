@@ -9,6 +9,9 @@
 -- There's no login mechanics.
 
 -- All informations stay on LocalStorage using vue-persistent package.
+
+<a href="https://pokedex-phi-woad.vercel.app/">Pokemon Demo</a>
+</br>
 </br>
 <a href="https://pokedex-phi-woad.vercel.app/" target="_blank">
 ![Vercel](https://therealsujitk-vercel-badge.vercel.app/?app=pokedex-phi-woad.vercel.app)
