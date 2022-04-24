@@ -1,16 +1,19 @@
-# Vue 3 + Typescript + Vite
+# Pokemon
 
-This template should help get you started developing with Vue 3 and Typescript in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+-- This an study over Vuejs using the Pokeapi.
 
-## Recommended IDE Setup
+## Description
 
-- [VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=johnsoncodehk.volar)
+-- Its possible to request pokemons from api and make teams with them, also, the user can edit end delete created teams.
 
-## Type Support For `.vue` Imports in TS
+-- There's no login mechanics.
 
-Since TypeScript cannot handle type information for `.vue` imports, they are shimmed to be a generic Vue component type by default. In most cases this is fine if you don't really care about component prop types outside of templates. However, if you wish to get actual prop types in `.vue` imports (for example to get props validation when using manual `h(...)` calls), you can enable Volar's Take Over mode by following these steps:
+-- All informations stay on LocalStorage using vue-persistent package.
 
-1. Run `Extensions: Show Built-in Extensions` from VSCode's command palette, look for `TypeScript and JavaScript Language Features`, then right click and select `Disable (Workspace)`. By default, Take Over mode will enable itself if the default TypeScript extension is disabled.
-2. Reload the VSCode window by running `Developer: Reload Window` from the command palette.
-
-You can learn more about Take Over mode [here](https://github.com/johnsoncodehk/volar/discussions/471).
+<a href="https://pokedex-phi-woad.vercel.app/">Pokemon Demo</a>
+</br>
+</br>
+<a href="https://pokedex-phi-woad.vercel.app/" target="_blank">
+![Vercel](https://therealsujitk-vercel-badge.vercel.app/?app=pokedex-phi-woad.vercel.app)
+ </a>
+<a href="https://www.linkedin.com/in/leoalexdeveloper/" target="_blank"><img src="https://img.shields.io/badge/-LinkedIn-%230077B5?style=flat&logo=linkedin&logoColor=white" target="_blank"></a>
